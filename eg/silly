@@ -4,10 +4,10 @@
 #
 use strict;
 
-use Filesystem::DiskFree;
+use Filesys::DiskFree;
 
 # Create a new handle
-my $df = new Filesystem::DiskFree;
+my $df = new Filesys::DiskFree;
 
 # Set the modes
 $df->set('-mode'=>'blocks');
@@ -28,7 +28,7 @@ $df->load($line);
 # Some prints of info
 print $df->device('/dev/hdc1')." is mounted on ".$df->mount('/dev/hdc1')."\n";
 
-$df = new Filesystem::DiskFree;
+$df = new Filesys::DiskFree;
 $df->set('-mode'=>'blocks');
 $df->set('-format'=>'bsdos');
 
@@ -44,7 +44,7 @@ $df->load($line);
 print $df->device('/home')." is mounted on ".$df->mount('/home')."\n";
 
 # Start again, create another new handle
-$df=new Filesystem::DiskFree;
+$df=new Filesys::DiskFree;
 
 # This time we're using a file handle. This is a silly example,
 # because you could do the same thing with just the df() method,
@@ -65,7 +65,7 @@ print join(" ",@disks);
 print "\n";
 
 # Finally, output the # of free inodes on /
-$df=new Filesystem::DiskFree;
+$df=new Filesys::DiskFree;
 
 $df->set('-mode'=>'inodes');
 $df->df();

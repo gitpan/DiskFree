@@ -5,12 +5,12 @@ use strict;
 # A version of 'df' which produces the same output on any system
 #
 
-use Filesystem::DiskFree;
+use Filesys::DiskFree;
 
 #
 # Create a df handle
 #
-my $df = new Filesystem::DiskFree;
+my $df = new Filesys::DiskFree;
 
 #
 # Call the actual df command

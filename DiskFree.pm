@@ -5,7 +5,7 @@
 # is free software; you can redistribute it and/or modify it under
 # the same terms as Perl itself.
 
-package Filesystem::DiskFree;
+package Filesys::DiskFree;
 
 use Carp;
 use strict;
@@ -14,7 +14,7 @@ use strict;
 
 use vars qw($VERSION $Format %Df);
 
-$VERSION = 0.01;
+$VERSION = 0.02;
 
 %Df = (
     'linux' => {
@@ -187,13 +187,13 @@ __END__
 
 =head1 NAME
 
-Filesystem::DiskFree -- perform the Unix command 'df' in a portable fashion
+Filesys::DiskFree -- perform the Unix command 'df' in a portable fashion
 
 =head1 SYNOPSIS
 
-    use Filesystem::DiskFree;
+    use Filesys::DiskFree;
 
-    $handle = new Disk:Free;
+    $handle = new Filesys::DiskFree;
     $handle->df();
     print "The root device is ".$handle->device("/")."\n";
     print "It has ".$handle->avail("/")." bytes available\n";
@@ -202,14 +202,14 @@ Filesystem::DiskFree -- perform the Unix command 'df' in a portable fashion
 
 =head1 DESCRIPTION
 
-Filesystem::DiskFree does about what the unix command df(1) does, listing
+Filesys::DiskFree does about what the unix command df(1) does, listing
 the mounted disks, and the amount of free space used & available.
 
 =head2 Functions
 
 =over 4
 
-=item Filesystem::DiskFree->set('option' => 'value')
+=item Filesys::DiskFree->set('option' => 'value')
 
 Sets various options within the module.
 
@@ -222,11 +222,11 @@ variable.
 
 Returns the previous values of the options.
 
-=item Filesystem::DiskFree->df()
+=item Filesys::DiskFree->df()
 
 Perfoms a 'df' command, and stores the values for later use.
 
-=item Filesystem::DiskFree->command()
+=item Filesys::DiskFree->command()
 
 Returns the appropriate command to do a 'df' command, for the current
 format.  This is used when you wish to call a df on a remote system.
@@ -234,42 +234,42 @@ Use the df() method for local df's.
 
 Returns undef if there isn't an appropriate command.
 
-=item Filesystem::DiskFree->load($line)
+=item Filesys::DiskFree->load($line)
 
 Reads in the output of a 'df', $line can be either a scalar or a filehandle.
 If $line is a filehandle, then the filehandle is read until EOF. 
 
 Returns undef on failure
 
-=item Filesystem::DiskFree->disks()
+=item Filesys::DiskFree->disks()
 
 Returns all the disks known about
 
-=item Filesystem::DiskFree->device($id)
+=item Filesys::DiskFree->device($id)
 
 Returns the device for $id, which is a scalar containing the device name of
 a disk or a filename, in which case the disk that filename in stored upon
 is used.
 
-=item Filesystem::DiskFree->mount($id)
+=item Filesys::DiskFree->mount($id)
 
 Returns the mount point for $id, which is a scalar containing the device
 name of a disk or a filename, in which case the disk that filename in
 stored upon is used.
 
-=item Filesystem::DiskFree->avail($id)
+=item Filesys::DiskFree->avail($id)
 
 Returns the amount of available space in bytes for $id, which is a scalar
 containing the device name of a disk or a filename, in which case the
 disk that filename in stored upon is used.
 
-=item Filesystem::DiskFree->total($id)
+=item Filesys::DiskFree->total($id)
 
 Returns the amount of total space in bytes for $id, which is a scalar
 containing the device name of a disk or a filename, in which case the
 disk that filename in stored upon is used.
 
-=item Filesystem::DiskFree->used($id)
+=item Filesys::DiskFree->used($id)
 
 Returns the amount of used space in bytes for $id, which is a scalar
 containing the device name of a disk or a filename, in which case the
