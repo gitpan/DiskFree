@@ -14,24 +14,37 @@ use strict;
 
 use vars qw($VERSION $Format %Df);
 
-$VERSION = 0.02;
+$VERSION = 0.03;
+
+# 
+# The format table
+#
+# Note, the format names are not gauranteed. If I find that there
+# is a reason to rename one, then they be renamed.
+#
 
 %Df = (
     'linux' => {
 	'blocks' => "df -P",
 	'inodes' => "df -Pi",
-	'format' => "svish",
+	'format' => "linuxish",
     },
     'solaris' =>  {
 	'blocks' => "df -k",
-	'inodes' => "df -ki",
+	'inodes' => "df -k -o i -F ufs",
 	'format' => "svish",
     },
     'bsdos' => {
 	'blocks' => "df -i",
 	'inodes' => "df -i",
 	'format' => 'bsdish',
-    }
+    },
+
+    'irix' => {
+    	'blocks' => "df",
+	'inodes' => "df -i",
+	'format' => "irixish",
+    },
 );
 
 use strict;
@@ -114,13 +127,24 @@ sub readline() {
 
     $_=$Df{"\L".$self->{'FORMAT'}."\E"}{'format'};
 
-    if(/svish/i){
+    if(/linuxish/i){
     	return undef if($line =~ /^Filesystem.*Mounted on/i);
     	($device,$total,$used,$avail,undef,$mount)=split(' ',$line);
 	if($self->{'MODE'} eq 'blocks'){
 		$total *= 1024;
 		$used *= 1024;
 		$avail *= 1024;
+	}
+    } elsif(/svish/i){
+    	return undef if($line =~ /^Filesystem.*Mounted on/i);
+	if($self->{'MODE'} eq 'blocks'){
+		($device,$total,$used,$avail,undef,$mount)=split(' ',$line);
+		$total *= 1024;
+		$used *= 1024;
+		$avail *= 1024;
+	} else {
+		($device,$used,$avail,undef,$mount)=split(' ',$line);
+		$total=$used+$avail;
 	}
     } elsif(/bsdish/){
     	return undef if($line =~ /^Filesystem.*Mounted on/i);
@@ -132,6 +156,21 @@ sub readline() {
 		$avail=$bavail*512;
 	} elsif($self->{'MODE'} eq 'inodes'){
 		$total=undef;
+		$used=$iused*512;
+		$avail=$iavail*512;
+	}
+    } elsif(/irixish/){
+    	return undef if($line =~ /^Filesystem.*Mounted on/i);
+	if($self->{'MODE'} eq 'blocks'){
+		($device,undef,$btotal,$bused,$bavail,undef,$mount)=split(' ',$line);
+		$total=$btotal*512;
+		$used=$bused*512;
+		$avail=$bavail*512;
+	} elsif($self->{'MODE'} eq 'inodes'){
+		($device,undef,$btotal,$bused,$bavail,undef,$iused,$iavail,undef,$mount)=
+			split(' ',$line);
+		return undef if $iused =~ /[A-Za-z]+/ or $iused == 0;
+		$total = ($iused + $iavail) * 512;
 		$used=$iused*512;
 		$avail=$iavail*512;
 	}
@@ -277,11 +316,11 @@ disk that filename in stored upon is used.
 
 =head1 BUGS
 
-It should support more formats, currently only Linux, Solaris & BSD
-are supported. Other formats will be added as available. Please
-sent the 'best' df options to use, and the output of df with those
-options, and the contents of $^O if you have access to a non-supported
-format.
+It should support more formats, currently only Linux, Irix, Solaris &
+BSD are supported. Other formats will be added as available. Please sent
+your OS Name & version, the 'best' df options to use, and the output of
+df with those options, and the contents of $^O if you have access to a
+non-supported format.
 
 =head1 AUTHOR
 

@@ -75,11 +75,11 @@ DESCRIPTION
         the disk that filename in stored upon is used.
 
 BUGS
-        It should support more formats, currently only Linux, Solaris & BSD
-        are supported. Other formats will be added as available. Please sent
-        the 'best' df options to use, and the output of df with those
-        options, and the contents of $^O if you have access to a non-
-        supported format.
+        It should support more formats, currently only Linux, Irix, Solaris
+        & BSD are supported. Other formats will be added as available.
+        Please sent your OS Name & version, the 'best' df options to use,
+        and the output of df with those options, and the contents of $^O if
+        you have access to a non-supported format.
 
 AUTHOR
         Alan R. Barclay <gorilla@drink.com>

@@ -1,5 +1,10 @@
 Revision history for Perl extension Filesys::DiskFree.
 
+0.03   Fri Jul 24 16:28:54 EDT 1998
+	- Added Irix format, thanks Danial F. Sully for the patch.
+	- Changed Solaris to work across more versions of Solaris,
+	  thanks to Lupe Christoph for the details.
+
 0.02  Thu Jul 23 15:13:20 1998
 	- Fixed a mistake in the documentation 
 
