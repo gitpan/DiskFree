@@ -1,0 +1,44 @@
+#!/usr/local/bin/perl -w
+use strict;
+
+#
+# A version of 'df' which produces the same output on any system
+#
+
+use Filesystem::DiskFree;
+
+#
+# Create a df handle
+#
+my $df = new Filesystem::DiskFree;
+
+#
+# Call the actual df command
+#
+$df->df();
+
+
+my $disk;
+#
+# Output the information
+#
+foreach $disk(sort($df->disks)){
+	write;
+}
+
+#
+# Format for the header
+#
+format STDOUT_TOP =
+Filesystem         1024-blocks  Used Available Capacity Mounted on
+.
+
+#
+# Format for each data item, notice the /1024's, all sizes are stored in bytes
+# for portablity
+#
+format STDOUT =
+@<<<<<<<<<<<<<<<<<< @>>>>>>> @>>>>>> @>>>>>>>     @>%   @<<<<<<<<<<<<<<<<<<<<<<<
+$df->device($disk), $df->total($disk)/1024, $df->used($disk)/1024,$df->avail($disk)/1024, $df->used($disk)/($df->used($disk)+$df->avail($disk))*100,$df->mount($disk)
+.
+
